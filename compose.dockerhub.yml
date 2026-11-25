@@ -1,0 +1,29 @@
+# Sobe o projeto a partir das imagens publicadas no Docker Hub (sem build local).
+# Uso: docker compose -f compose.dockerhub.yml up -d
+# Para fixar uma versão: IMAGE_TAG=1.0.0 docker compose -f compose.dockerhub.yml up -d
+services:
+  backend:
+    image: emersonbottega/backend:${IMAGE_TAG:-latest}
+    container_name: backend
+    pull_policy: always
+    # Sem "ports": a API só é acessível pela rede interna do compose.
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  frontend:
+    image: emersonbottega/frontend:${IMAGE_TAG:-latest}
+    container_name: frontend
+    pull_policy: always
+    ports:
+      - "3100:3000"
+    environment:
+      # O navegador chama /api no próprio frontend (URL relativa) e o dev
+      # server repassa ao backend pela rede interna (src/setupProxy.js).
+      - REACT_APP_API_BASE_URL=
+      - API_PROXY_TARGET=http://backend:5000
+    depends_on:
+      - backend
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"

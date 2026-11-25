@@ -1,0 +1,68 @@
+name: Docker Publish
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - versions.md
+  workflow_dispatch:
+
+concurrency:
+  group: docker-publish
+  cancel-in-progress: false
+
+jobs:
+  version:
+    name: Read version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.read.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract latest version from versions.md
+        id: read
+        run: |
+          version=$(grep -m1 -E '^## ' versions.md | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n1)
+          if [ -z "$version" ]; then
+            echo "::error file=versions.md::Nenhum título '## MAJOR.MINOR.PATCH' encontrado."
+            exit 1
+          fi
+          echo "Versão: $version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+  publish:
+    name: Build and push ${{ matrix.image }}
+    needs: version
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: backend
+            context: prototype/backend
+          - image: frontend
+            context: prototype/frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-qemu-action@v3
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          username: emersonbottega
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            emersonbottega/${{ matrix.image }}:${{ needs.version.outputs.version }}
+            emersonbottega/${{ matrix.image }}:latest
+          cache-from: type=gha,scope=${{ matrix.image }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.image }}

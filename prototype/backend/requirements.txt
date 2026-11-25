@@ -1,0 +1,21 @@
+blinker==1.9.0
+click==8.4.0
+Flask==3.1.3
+Flask-Limiter==3.12
+gunicorn==23.0.0
+flask-cors==6.0.2
+itsdangerous==2.2.0
+Jinja2==3.1.6
+MarkupSafe==3.0.3
+numpy==2.4.6
+scipy==1.17.1
+triangle==20250106; platform_machine != "aarch64"
+Werkzeug==3.1.8
+
+# Optional: enables METIS graph partitioning. Ships prebuilt wheels for Linux/
+# macOS, but not for Windows (where building it requires a native toolchain).
+# The environment marker below skips it on Windows so `pip install` never fails;
+# there, the API automatically falls back to a pure-Python Recursive Coordinate
+# Bisection partitioner, so partitioning keeps working. On Windows you may still
+# install METIS manually (`pip install pymetis`) if you have a build toolchain.
+pymetis==2025.2.2; platform_system != "Windows"

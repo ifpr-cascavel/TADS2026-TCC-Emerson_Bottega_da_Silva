@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: tcc-delaunay-backend
+    runtime: docker
+    rootDir: prototype/backend
+    dockerfilePath: ./Dockerfile
+    dockerContext: ./
+    healthCheckPath: /api/v1/status
+    autoDeployTrigger: checksPass
+    plan: free
+    envVars:
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://tcc-delaunay-frontend.onrender.com
+      - key: RATELIMIT_GENERATION_LIMIT
+        value: 30 per minute
+
+  - type: web
+    runtime: static
+    name: tcc-delaunay-frontend
+    rootDir: prototype/frontend
+    autoDeployTrigger: checksPass
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./build
+    envVars:
+      - key: REACT_APP_API_BASE_URL
+        value: https://tcc-delaunay-backend.onrender.com

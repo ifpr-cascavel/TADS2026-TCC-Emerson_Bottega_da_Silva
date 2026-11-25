@@ -1,0 +1,602 @@
+/* ============================================================================
+   Design tokens
+   ========================================================================== */
+:root {
+  --color-bg: #0f172a;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f1f5f9;
+  --color-border: #e2e8f0;
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+  --color-primary: #2563eb;
+  --color-primary-strong: #1d4ed8;
+  --color-danger: #dc2626;
+  --color-danger-soft: #fef2f2;
+  --color-success: #047857;
+  --color-success-soft: #ecfdf5;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08), 0 8px 24px rgba(15, 23, 42, 0.06);
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 0;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 260px, #f8fafc 260px, #f8fafc 100%);
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================================
+   Layout
+   ========================================================================== */
+.app {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-5) var(--space-6);
+}
+
+.app-header {
+  color: #f8fafc;
+  margin-bottom: var(--space-5);
+}
+
+.app-title {
+  margin: 0;
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.app-subtitle {
+  margin: var(--space-2) 0 0;
+  font-size: 0.98rem;
+  color: #cbd5e1;
+  max-width: 60ch;
+}
+
+.app-main {
+  display: grid;
+  grid-template-columns: 292px minmax(0, 1fr) 300px;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.app-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ============================================================================
+   Control panel
+   ========================================================================== */
+.control-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.panel-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.panel-heading {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
+.panel-metric {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.panel-metric-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1;
+}
+
+.panel-metric-label {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+/* ---- Fields ---- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.field-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.field-optional {
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+
+.field-input {
+  height: 42px;
+  padding: 0 var(--space-3);
+  font-size: 1rem;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.field-input:disabled {
+  background: var(--color-surface-muted);
+  cursor: not-allowed;
+}
+
+.field-input--invalid {
+  border-color: var(--color-danger);
+}
+
+.field-input--invalid:focus {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+}
+
+.field-hint {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+.field-hint--error {
+  color: var(--color-danger);
+}
+
+/* ---- Info tooltip ("i" help affordance) ---- */
+.info-tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.info-tooltip-trigger {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  font-family: inherit;
+  font-style: italic;
+  line-height: 1;
+  color: var(--color-text-muted);
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  cursor: help;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.info-tooltip-trigger:hover,
+.info-tooltip-trigger:focus-visible {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  background: rgba(37, 99, 235, 0.08);
+  outline: none;
+}
+
+.info-tooltip-bubble {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: auto;
+  right: 0;
+  transform: none;
+  width: 240px;
+  max-width: calc(100vw - 32px);
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.74rem;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.45;
+  color: #f8fafc;
+  background: #1e293b;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-card);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+/* The first fields use a centered bubble above the help icon so the text does
+   not extend beyond either side of the form. */
+.info-tooltip--right .info-tooltip-bubble {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+}
+
+.info-tooltip:hover .info-tooltip-bubble,
+.info-tooltip:focus-within .info-tooltip-bubble {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ---- Buttons ---- */
+.panel-actions {
+  gap: var(--space-3);
+}
+
+.button {
+  height: 44px;
+  padding: 0 var(--space-4);
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    transform 0.05s ease, box-shadow 0.15s ease;
+}
+
+.button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.35);
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.button--primary {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.button--primary:hover:not(:disabled) {
+  background: var(--color-primary-strong);
+}
+
+.button--ghost {
+  background: var(--color-surface);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.button--ghost:hover:not(:disabled) {
+  background: rgba(37, 99, 235, 0.06);
+}
+
+.button--subtle {
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+}
+
+.button--subtle:hover:not(:disabled) {
+  background: #e2e8f0;
+  color: var(--color-text);
+}
+
+.panel-hint {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+/* ---- Loading spinner ---- */
+.spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================================================
+   Status banners
+   ========================================================================== */
+.status-banner {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  border: 1px solid transparent;
+}
+
+.status-banner--error {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+  border-color: #fecaca;
+}
+
+.status-banner--success {
+  background: var(--color-success-soft);
+  color: var(--color-success);
+  border-color: #a7f3d0;
+}
+
+/* ============================================================================
+   Map
+   ========================================================================== */
+.map-wrapper {
+  position: relative;
+}
+
+.map-status {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.map-canvas {
+  width: 100%;
+  height: 620px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  z-index: 0;
+}
+
+.map-zoom-control {
+  display: flex;
+  flex-direction: column;
+  width: 34px;
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid rgba(15, 23, 42, 0.2);
+  border-radius: 4px;
+  box-shadow: 0 1px 5px rgba(15, 23, 42, 0.35);
+}
+
+.map-zoom-button {
+  width: 100%;
+  height: 32px;
+  border: 0;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  text-align: center;
+}
+
+.map-zoom-button {
+  padding: 0;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.map-zoom-button:hover,
+.map-zoom-button:focus-visible {
+  background: var(--color-surface-muted);
+}
+
+.map-zoom-button + .map-zoom-button {
+  border-top: 1px solid var(--color-border);
+}
+
+/* Fixed interaction area around each boundary point: a grab cursor signals that
+   the point can be dragged to a new position. */
+.boundary-point,
+.boundary-point-handle {
+  cursor: grab;
+}
+
+.boundary-point:active,
+.boundary-point-handle:active {
+  cursor: grabbing;
+}
+
+/* ============================================================================
+   Legend
+   ========================================================================== */
+.legend {
+  position: relative;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  box-shadow: var(--shadow-card);
+  align-self: start;
+  min-width: 280px;
+}
+
+.legend-title {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2);
+}
+
+.legend-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.legend-checkbox {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.legend-label {
+  font-size: 0.78rem;
+  color: var(--color-text);
+  line-height: 1.35;
+  flex: 1;
+}
+
+.legend-marker {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+}
+
+.legend-marker--dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.legend-marker--dot-ring {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.15);
+}
+
+.legend-marker--line {
+  height: 3px;
+  border-radius: 2px;
+}
+
+.legend-marker--line-dashed {
+  height: 3px;
+  border-radius: 2px;
+  background-repeat: repeat-x;
+  background-size: 8px 3px;
+}
+
+.legend-marker--area {
+  height: 14px;
+  border: 1.5px solid;
+  border-radius: 3px;
+}
+
+.legend-marker--sensor-influence {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.legend-marker--partitions {
+  border-radius: 3px;
+  background: linear-gradient(90deg, #2563eb 0 33%, #dc2626 33% 66%, #059669 66% 100%);
+}
+
+/* ============================================================================
+   Responsive
+   ========================================================================== */
+@media (max-width: 860px) {
+  body {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 220px, #f8fafc 220px, #f8fafc 100%);
+  }
+
+  .app {
+    width: 100%;
+    max-width: none;
+    margin-inline: auto;
+    padding: var(--space-5) var(--space-4);
+  }
+
+  .app-main {
+    width: 100%;
+    max-width: 760px;
+    margin-inline: auto;
+    min-width: 0;
+    grid-template-columns: 1fr;
+  }
+
+  .app-sidebar,
+  .map-wrapper,
+  .legend {
+    width: 100%;
+    max-width: 760px;
+    margin-inline: auto;
+    min-width: 0;
+  }
+
+  .legend {
+    order: 2;
+    min-width: 0;
+  }
+
+  .map-wrapper {
+    order: 3;
+  }
+
+}
